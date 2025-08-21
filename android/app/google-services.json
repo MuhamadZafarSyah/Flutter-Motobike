@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "509657310493",
+    "project_id": "course-motobike-7141a",
+    "storage_bucket": "course-motobike-7141a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509657310493:android:74e0a9db2e09a540faedf4",
+        "android_client_info": {
+          "package_name": "com.example.main"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1tWRwTOH8MdfUH0jmOGzW2OOFD3ykuOg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
