@@ -6,14 +6,14 @@ class Chat {
   final String senderId;
   final String message;
   final Map? bikeDetail;
-  final Timestamp timestamp;
+  final Timestamp? timestamp;
   Chat({
     required this.roomId,
     required this.receiverId,
     required this.senderId,
     required this.message,
     this.bikeDetail,
-    required this.timestamp,
+    this.timestamp,
   });
 
   Map<String, dynamic> toJson() {
@@ -23,7 +23,6 @@ class Chat {
       'senderId': senderId,
       'message': message,
       'bikeDetail': bikeDetail,
-
       // INI UNTUK GENERATE TIMESTAMP BAWAAN DARI FLUTTER
       'timestamp': FieldValue.serverTimestamp(),
     };

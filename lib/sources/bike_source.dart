@@ -46,4 +46,20 @@ class BikeSource {
       return null;
     }
   }
+
+  static Future<String> addBike(Bike bike) async {
+    try {
+      final ref = FirebaseFirestore.instance.collection('Bikes');
+      final docRef = ref.doc();
+
+      final bikeWithId = bike.copyWith(id: docRef.id);
+
+      await docRef.set(bikeWithId.toJson());
+
+      return "Success Adding Bike";
+    } catch (e) {
+      log(e.toString());
+      return "Something went wrong!";
+    }
+  }
 }

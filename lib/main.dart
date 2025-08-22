@@ -16,7 +16,7 @@ import 'package:main/pages/splash_screen.dart';
 import 'package:main/pages/success_boking_page.dart';
 import 'firebase_options.dart';
 import 'package:cloudinary_url_gen/cloudinary.dart';
-import 'package:cloudinary_flutter/image/cld_image.dart';
+// import 'package:cloudinary_flutter/image/cld_image.dart';
 import 'package:cloudinary_flutter/cloudinary_context.dart';
 
 Future<void> main() async {
