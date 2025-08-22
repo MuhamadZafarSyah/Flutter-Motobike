@@ -12,18 +12,19 @@ class ButtonPrimary extends StatelessWidget {
       borderRadius: BorderRadius.circular(50),
       child: InkWell(
         onTap: onTap,
-        child: Container(
+
+        // NOTE: Direkomendasikan menggunakan SizedBox dari flutter karna properties nya tidak banyak
+        child: SizedBox(
+          width: double.infinity,
           height: 52,
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: const Color(0xff070623),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Text(
-            text,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
+          child: Center(
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                color: const Color(0xff070623),
+              ),
             ),
           ),
         ),

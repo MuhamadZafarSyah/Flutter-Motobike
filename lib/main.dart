@@ -64,8 +64,8 @@ class MyApp extends StatelessWidget {
       // DEKLARATIF ROUTING
       routes: {
         '/discover': (context) => const DiscoverPage(),
-        '/sign-up': (context) => const SignUpPage(),
-        '/sign-in': (context) => const SignInPage(),
+        '/signup': (context) => const SignUpPage(),
+        '/signin': (context) => const SignInPage(),
         '/detail': (context) {
           String bikeId = ModalRoute.of(context)!.settings.arguments as String;
           return DetailPage(bikeId: bikeId);
