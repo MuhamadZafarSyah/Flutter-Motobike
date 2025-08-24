@@ -1,9 +1,11 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:main/sources/auth_source.dart';
 import 'package:main/widgets/button_primary.dart';
 import 'package:main/widgets/button_secondary.dart';
 import 'package:main/widgets/input.dart';
+import 'package:main/common/info.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -16,6 +18,24 @@ class _SignUpPageState extends State<SignUpPage> {
   final edtName = TextEditingController();
   final edtEmail = TextEditingController();
   final edtPassword = TextEditingController();
+
+  createNewAccount() {
+    if (edtName.text == '') return Info.error('Name must be filled');
+    if (edtEmail.text == '') return Info.error('Email must be filled');
+    if (edtPassword.text == '') return Info.error('Password must be filled');
+
+    Info.netral('loading..');
+
+    AuthSource.signUp(edtName.text, edtEmail.text, edtPassword.text).then((
+      message,
+    ) {
+      if (message != 'success') return Info.error(message);
+      Info.success('Account Sign up');
+      Future.delayed(const Duration(milliseconds: 1500), () {
+        Navigator.pushReplacementNamed(context, '/signin');
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +65,7 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
           const Gap(12),
           Input(
-            hint: 'write your real email',
+            hint: 'write your real name',
             editingController: edtName,
             icon: 'assets/ic_profile.png',
           ),
@@ -79,12 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
             obscure: true,
           ),
           const Gap(30),
-          ButtonPrimary(
-            text: "Create New Account",
-            onTap: () {
-              Navigator.pushReplacementNamed(context, '/signup');
-            },
-          ),
+          ButtonPrimary(text: "Create New Account", onTap: createNewAccount),
           const Gap(30),
           const DottedLine(
             dashLength: 6,

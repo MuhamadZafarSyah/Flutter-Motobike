@@ -22,7 +22,7 @@ class AuthSource {
       );
 
       await FirebaseFirestore.instance
-          .collection('users')
+          .collection('Users')
           .doc(account.uid)
           .set(account.toJson());
 
