@@ -1,4 +1,4 @@
- import 'package:d_session/d_session.dart';
+import 'package:d_session/d_session.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
@@ -21,9 +21,9 @@ import 'package:cloudinary_flutter/cloudinary_context.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  CloudinaryContext.cloudinary = Cloudinary.fromCloudName(
-    cloudName: 'djxobtcx0',
-  );
+  // CloudinaryContext.cloudinary = Cloudinary.fromCloudName(
+  //   cloudName: 'djxobtcx0',
+  // );
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   SystemChrome.setPreferredOrientations([

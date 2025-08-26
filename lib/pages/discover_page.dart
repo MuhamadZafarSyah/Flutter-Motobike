@@ -19,7 +19,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
     const SettingsFragment(),
   ];
 
-  final fragmentIndex = 0.obs;
+  final fragmentIndex = 2.obs;
 
   @override
   Widget build(BuildContext context) {
