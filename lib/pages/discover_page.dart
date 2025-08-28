@@ -19,7 +19,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
     const SettingsFragment(),
   ];
 
-  final fragmentIndex = 2.obs;
+  final fragmentIndex = 0.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -69,9 +69,15 @@ class _DiscoverPageState extends State<DiscoverPage> {
                 label: 'Chats',
                 icon: 'assets/ic_chats.png',
                 iconOn: 'assets/ic_chats_on.png',
-                onTap: () {},
                 hasDot: true,
-                isActive: true,
+                isActive: false,
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    '/chatting',
+                    arguments: {'uid': 'cs', 'userName': 'CS'},
+                  );
+                },
               ),
               buildItemNav(
                 label: 'Settings',
