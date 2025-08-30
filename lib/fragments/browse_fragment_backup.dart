@@ -1,9 +1,6 @@
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:main/controllers/browse_feature_controller.dart';
 import 'package:main/models/bike.dart';
 import 'package:main/widgets/failed_ui.dart';
@@ -127,8 +124,8 @@ class _BrowseFragmentState extends State<BrowseFragment> {
     EdgeInsetsGeometry margin,
     bool isTrending,
   ) {
-    // final String imageStr = bike.image.trim();
-    // final bool isNetwork = imageStr.startsWith('http');
+    final String imageStr = bike.image.trim();
+    final bool isNetwork = imageStr.startsWith('http');
 
     return Container(
       width: 252,
@@ -139,110 +136,107 @@ class _BrowseFragmentState extends State<BrowseFragment> {
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Stack(
             children: [
-              ExtendedImage.network(bike.image, height: 170, width: 220),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: SizedBox(
+                  width: 220,
+                  height: 170,
+                  child: imageStr.isEmpty
+                      ? Image.asset('assets/placeholder.png', fit: BoxFit.cover)
+                      : isNetwork
+                      ? Image.network(
+                          imageStr,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stack) => Image.asset(
+                            'assets/placeholder.png',
+                            fit: BoxFit.cover,
+                          ),
+                          loadingBuilder: (context, child, loading) {
+                            if (loading == null) return child;
+                            return const Center(
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            );
+                          },
+                        )
+                      : Image.asset(
+                          imageStr,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stack) => Image.asset(
+                            'assets/placeholder.png',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                ),
+              ),
+              // Trending Badge
               if (isTrending)
-                Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xffFF2055),
-                    borderRadius: BorderRadius.circular(50),
-                    boxShadow: [
-                      BoxShadow(
-                        offset: Offset(0, 4),
-                        blurRadius: 10,
-                        color: Color(0xffFF2056).withOpacity(0.5),
-                      ),
-                    ],
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 6,
-                    horizontal: 14,
-                  ),
-                  child: Text(
-                    'Trending',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
+                Positioned(
+                  top: 12,
+                  left: 12,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
                     ),
-                  ),
-                ),
-            ],
-          ),
-
-          // TIPS: ini buat menambahkan space
-          const Spacer(),
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      bike.name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 18,
+                    decoration: BoxDecoration(
+                      color: const Color(0xffFF2D92),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: const Text(
+                      'TRENDING',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xff070623),
                       ),
                     ),
-                    const Gap(4),
-                    Text(
-                      bike.category,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff070623),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-              RatingBar.builder(
-                initialRating: bike.rating.toDouble(),
-                itemPadding: const EdgeInsets.all(0),
-                itemSize: 16,
-                unratedColor: Colors.grey[300],
-                allowHalfRating: true,
-                itemBuilder: (context, index) =>
-                    const Icon(Icons.star, color: Color(0xffFFBC1C)),
-                ignoreGestures: true,
-                onRatingUpdate: (value) {},
+            ],
+          ),
+          const Gap(12),
+          // Bike Name
+          Text(
+            bike.name,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Color(0xff070623),
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const Gap(4),
+          // Rating Stars
+          Row(
+            children: [
+              ...List.generate(5, (index) {
+                return Icon(
+                  index < bike.rating.floor() ? Icons.star : Icons.star_border,
+                  color: const Color(0xffFFB800),
+                  size: 16,
+                );
+              }),
+              const Gap(4),
+              Text(
+                bike.rating.toString(),
+                style: const TextStyle(fontSize: 12, color: Color(0xff838383)),
               ),
             ],
           ),
-          const Gap(16),
-          Row(
-            // TIPS : Ini sama aja kaya items end/start/between
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                NumberFormat.currency(
-                  decimalDigits: 0,
-                  locale: 'en_US',
-                  symbol: '\$',
-                ).format(bike.price),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xff6747E9),
-                ),
-              ),
-              Text(
-                "/day",
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xff838385),
-                ),
-              ),
-            ],
+          const Gap(8),
+          // Price
+          Text(
+            '\$${bike.price.toInt()}/day',
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: Color(0xff6366F1),
+            ),
           ),
         ],
       ),
