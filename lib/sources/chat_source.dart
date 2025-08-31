@@ -21,7 +21,7 @@ class ChatSource {
         'roomId': uid,
         'name': userName,
         // ASSIGN DEFAULT MESSAGE
-        'lastMessage': 'Welcom to Motobike',
+        'lastMessage': 'Welcome to Motobike',
         'newFromCS': false,
         'newFromUser': true,
         // 'createdAt': FieldValue.serverTimestamp(),
@@ -31,7 +31,7 @@ class ChatSource {
       //   roomId: uid,
       //   receiverId: uid,
       //   senderId: 'cs',
-      //   message: 'Welcom to Motobike',
+      //   message: 'Welcome to Motobike',
       //   bikeDetail: null,
       // );
 
@@ -44,7 +44,7 @@ class ChatSource {
             'roomId': uid,
             'receiverId': uid,
             'senderId': 'cs',
-            'message': 'Welcom to Motobike',
+            'message': 'Welcome to Motobike',
             'bikeDetail': null,
             'timestamp': FieldValue.serverTimestamp(),
           });
