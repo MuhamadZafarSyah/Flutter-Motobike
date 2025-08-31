@@ -97,7 +97,7 @@ class _BrowseFragmentState extends State<BrowseFragment> {
             BoxShadow(
               offset: Offset(0, 16),
               blurRadius: 20,
-              color: Color(0xff4A1DFF).withOpacity(0.25),
+              color: Color(0xff4A1DFF).withValues(alpha: 0.25),
             ),
           ],
         ),
@@ -406,7 +406,7 @@ class _BrowseFragmentState extends State<BrowseFragment> {
                         BoxShadow(
                           offset: Offset(0, 4),
                           blurRadius: 10,
-                          color: Color(0xffFF2056).withOpacity(0.5),
+                          color: Color(0xffFF2056).withValues(alpha: 0.5),
                         ),
                       ],
                     ),
