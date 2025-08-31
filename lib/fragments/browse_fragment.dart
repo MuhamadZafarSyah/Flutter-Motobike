@@ -260,7 +260,7 @@ class _BrowseFragmentState extends State<BrowseFragment> {
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
-                      color: Color(0xff070623),
+                      color: Color(0xff838384),
                     ),
                   ),
                 ],
@@ -450,7 +450,7 @@ class _BrowseFragmentState extends State<BrowseFragment> {
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
-                          color: Color(0xff070623),
+                          color: Color(0xff838384),
                         ),
                       ),
                     ],
@@ -504,8 +504,6 @@ class _BrowseFragmentState extends State<BrowseFragment> {
     );
   }
 
-  // ...existing code...
-  // ...existing code...
   Widget buildCategories() {
     final categories = [
       ['assets/ic_city.png', 'City'],

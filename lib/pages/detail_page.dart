@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:d_session/d_session.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +9,6 @@ import 'package:main/controllers/detail_bike_controller.dart';
 import 'package:main/models/account.dart';
 import 'package:main/models/bike.dart';
 import 'package:main/models/chat.dart';
-import 'package:main/sources/chat_source.dart';
 import 'package:main/widgets/button_primary.dart';
 import 'package:main/widgets/failed_ui.dart';
 
@@ -264,7 +261,6 @@ class _DetailPageState extends State<DetailPage> {
       borderRadius: BorderRadius.circular(50),
       child: InkWell(
         onTap: () {
-          //
           String uid = account.uid;
           Chat chat = Chat(
             roomId: uid,
@@ -279,22 +275,29 @@ class _DetailPageState extends State<DetailPage> {
               'category': bike.category,
             },
           );
+          //
+          Navigator.pushNamed(
+            // ignore: use_build_context_synchronously
+            context,
+            '/chatting',
+            arguments: {'uid': uid, 'userName': account.name},
+          );
           Info.netral("Loading...");
-          ChatSource.openChatRoom(uid, account.name)
-              .then((value) {
-                ChatSource.sendMessage(chat, uid).then((value) {
-                  Navigator.pushNamed(
-                    // ignore: use_build_context_synchronously
-                    context,
-                    '/chatting',
-                    arguments: {'uid': uid, 'userName': account.name},
-                  );
-                });
-              })
-              .catchError((e) {
-                Info.error("Something went wrong!");
-                log(e.toString());
-              });
+          // ChatSource.openChatRoom(uid, account.name)
+          //     .then((value) {
+          //       ChatSource.sendMessage(chat, uid).then((value) {
+          //         Navigator.pushNamed(
+          //           // ignore: use_build_context_synchronously
+          //           context,
+          //           '/chatting',
+          //           arguments: {'uid': uid, 'userName': account.name},
+          //         );
+          //       });
+          //     })
+          //     .catchError((e) {
+          //       Info.error("Something went wrong!");
+          //       log(e.toString());
+          //     });
         },
         child: SizedBox(
           width: double.infinity,
