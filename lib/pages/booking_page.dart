@@ -23,16 +23,79 @@ class _BookingPageState extends State<BookingPage> {
   final edtStartDate = TextEditingController();
   final edtEndDate = TextEditingController();
 
-  pickDate(TextEditingController editingController) {
-    showDatePicker(
+  // pickDate(TextEditingController editingController, bool endDate) {
+  //   showDatePicker(
+  //     context: context,
+  //     firstDate: DateTime.now(),
+  //     lastDate: DateTime.now().add(const Duration(days: 30)),
+  //     initialDate: DateTime.now(),
+  //   ).then((pickedDate) {
+  //     if (pickedDate == null) return;
+  //     editingController.text = DateFormat('dd MMM yyyy').format(pickedDate);
+  //   });
+  // }
+
+  //  ----------------------- PENJELASAN UNTUK FUNGSI PICK DATE -----------------------
+  //   Berikut penjelasan singkat untuk potongan kode yang Anda highlight:
+
+  // _fmt = DateFormat('dd MMM yyyy')
+
+  // Formatter tanggal untuk tampilan dan parsing, contoh: “05 Sep 2025”.
+  // DateTime? _parse(String s)
+
+  // Mencoba mengubah String tanggal (sesuai _fmt) menjadi DateTime.
+  // Menggunakan parseStrict agar format harus persis, dan mengembalikan null jika gagal (menghindari crash).
+  // Future<void> pickDate(TextEditingController editingController, bool endDate)
+
+  // Parameter:
+  // editingController: field mana yang akan diisi (Start atau End).
+  // endDate: true jika sedang memilih End Date, false jika Start Date.
+  // Menentukan base:
+  // Jika memilih End Date: base = hasil _parse(edtStartDate.text) atau DateTime.now() jika Start belum diisi.
+  // Jika memilih Start Date: base = DateTime.now().
+  // showDatePicker:
+  // firstDate: base → tanggal paling awal yang bisa dipilih.
+  // initialDate: base → mencegah initial berada di luar jangkauan.
+  // lastDate: base + 30 hari → membatasi rentang pilihan maksimal 30 hari dari base.
+  // Setelah user memilih:
+  // Jika picked null → batal.
+  // Jika ada, format ke teks dengan _fmt dan set ke editingController.
+  // Sinkronisasi Start/End:
+  // Jika yang diubah adalah Start Date dan End Date sudah terisi, End akan dikosongkan bila lebih awal dari Start. Ini memaksa user memilih End yang valid.
+
+  final _fmt = DateFormat('dd MMM yyyy');
+  DateTime? _parse(String s) {
+    try {
+      return _fmt.parseStrict(s);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<void> pickDate(
+    TextEditingController editingController,
+    bool endDate,
+  ) async {
+    // base = startDate (kalau endDate), atau sekarang (kalau start)
+    final base = endDate
+        ? (_parse(edtStartDate.text) ?? DateTime.now())
+        : DateTime.now();
+
+    final picked = await showDatePicker(
       context: context,
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 30)),
-      initialDate: DateTime.now(),
-    ).then((pickedDate) {
-      if (pickedDate == null) return;
-      editingController.text = DateFormat('dd MMM yyyy').format(pickedDate);
-    });
+      firstDate: base, // <= simple
+      initialDate: base, // <= simple (hindari invalid initial)
+      lastDate: base.add(const Duration(days: 30)),
+    );
+
+    if (picked == null) return;
+    editingController.text = _fmt.format(picked);
+
+    // Jika user mengganti Start Date dan End Date < Start Date, kosongkan End Date
+    if (!endDate && edtEndDate.text.isNotEmpty) {
+      final end = _parse(edtEndDate.text);
+      if (end != null && end.isBefore(picked)) edtEndDate.clear();
+    }
   }
 
   @override
@@ -98,6 +161,7 @@ class _BookingPageState extends State<BookingPage> {
           SizedBox(
             height: 52,
             child: DropdownButtonFormField(
+              initialValue: listInsurance[0],
               icon: UnconstrainedBox(
                 child: Image.asset(
                   'assets/ic_arrow_down.png',
@@ -251,7 +315,7 @@ class _BookingPageState extends State<BookingPage> {
             editingController: edtStartDate,
             icon: 'assets/ic_calendar.png',
             enable: false,
-            onTapBox: () => pickDate(edtStartDate),
+            onTapBox: () => pickDate(edtStartDate, false),
           ),
           const Gap(20),
           Text(
@@ -267,7 +331,7 @@ class _BookingPageState extends State<BookingPage> {
             editingController: edtEndDate,
             icon: 'assets/ic_calendar.png',
             enable: false,
-            onTapBox: () => pickDate(edtEndDate),
+            onTapBox: () => pickDate(edtEndDate, true),
           ),
         ],
       ),
