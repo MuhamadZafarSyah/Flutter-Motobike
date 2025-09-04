@@ -42,13 +42,15 @@ class _BookingPageState extends State<BookingPage> {
         children: [
           Gap(30 + MediaQuery.of(context).padding.top),
           Header(title: 'Booking'),
-          const Gap(20),
+          const Gap(24),
           BookingBike(bike: widget.bike),
-          const Gap(20),
+          const Gap(24),
           buildFormBooking(),
-          const Gap(20),
+          const Gap(24),
           buildAgency(),
-          const Gap(20),
+          const Gap(24),
+          buildInsurance(),
+          const Gap(24),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: ButtonPrimary(
@@ -64,6 +66,86 @@ class _BookingPageState extends State<BookingPage> {
                   },
                 );
               },
+            ),
+          ),
+          const Gap(24),
+        ],
+      ),
+    );
+  }
+
+  Widget buildInsurance() {
+    final listInsurance = [
+      'Select available insurance',
+      'Jiwa Perkasa',
+      'Kejiwaan',
+      'Jiwa Perasaan',
+    ];
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Insurance',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Color(0xff070623),
+            ),
+          ),
+          const Gap(12),
+          SizedBox(
+            height: 52,
+            child: DropdownButtonFormField(
+              icon: UnconstrainedBox(
+                child: Image.asset(
+                  'assets/ic_arrow_down.png',
+                  width: 18,
+                  height: 18,
+                ),
+              ),
+              items: listInsurance
+                  .map(
+                    (e) => DropdownMenuItem(
+                      value: e,
+                      child: Text(
+                        e,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff070623),
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (value) {},
+              decoration: InputDecoration(
+                fillColor: Colors.white,
+                filled: true,
+
+                contentPadding: const EdgeInsets.only(right: 16),
+                prefixIcon: UnconstrainedBox(
+                  alignment: AlignmentGeometry.xy(0.2, 0),
+                  child: Image.asset(
+                    'assets/ic_insurance.png',
+                    width: 24,
+                    height: 24,
+                  ),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  borderSide: const BorderSide(
+                    color: Color(0xff4A1DFF),
+                    width: 2,
+                  ),
+                ),
+              ),
             ),
           ),
         ],
