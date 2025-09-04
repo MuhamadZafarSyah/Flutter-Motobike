@@ -90,6 +90,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           buildItemDetail('Start Date', widget.startDate, ''),
           buildItemDetail('End Date', widget.endDate, ''),
           buildItemDetail('Duration', '$totalDurationDays', ' days'),
+          buildItemDetail('Sub Total Price', _currency(subTotal), ''),
           buildItemDetail('Insurance 20%', _currency(insurance), ''),
           buildItemDetail('Tax 2%', _currency(tax), ''),
           buildItemDetail(
