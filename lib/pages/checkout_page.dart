@@ -1,3 +1,4 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
@@ -69,13 +70,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
           const Gap(24),
           BookingBike(bike: widget.bike),
           const Gap(24),
-          buiildDetails(),
+          buildDetails(),
+          const Gap(24),
+          buildPaymentMethod(),
         ],
       ),
     );
   }
 
-  Widget buiildDetails() {
+  Widget buildDetails() {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -136,6 +139,74 @@ class _CheckoutPageState extends State<CheckoutPage> {
             fontSize: 14,
             fontWeight: FontWeight.w400,
             color: Color(0xff070623),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildPaymentMethod() {
+    final listPaymentMethod = <({String icon, String name})>[
+      (icon: 'assets/wallet.png', name: 'My Wallet'),
+      (icon: 'assets/cards.png', name: 'Credit Card'),
+      (icon: 'assets/cash.png', name: 'Cash'),
+    ];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: const Text(
+            'Agency',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Color(0xff070623),
+            ),
+          ),
+        ),
+        const Gap(12),
+        SizedBox(
+          height: 120,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            itemCount: listPaymentMethod.length,
+            itemBuilder: (context, index) {
+              return Container(
+                width: 120,
+                margin: EdgeInsets.only(
+                  left: index == 0 ? 24 : 8,
+                  right: index == listPaymentMethod.length - 1 ? 24 : 8,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  border: index == 1
+                      ? Border.all(width: 3, color: const Color(0xff4A1DFF))
+                      : null,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ExtendedImage.asset(
+                      listPaymentMethod[index].icon,
+                      width: 38,
+                      height: 38,
+                    ),
+                    const Gap(10),
+                    Text(
+                      listPaymentMethod[index].name,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff070623),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ],
