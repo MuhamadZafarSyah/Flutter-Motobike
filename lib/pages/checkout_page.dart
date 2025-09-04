@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:main/models/bike.dart';
+import 'package:main/widgets/booking_bike.dart';
+import 'package:main/widgets/header.dart';
 
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({
@@ -19,6 +22,15 @@ class CheckoutPage extends StatefulWidget {
 class _CheckoutPageState extends State<CheckoutPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: ListView(
+        children: [
+          Gap(30 + MediaQuery.of(context).padding.top),
+          Header(title: 'Checkout'),
+          const Gap(20),
+          BookingBike(bike: widget.bike),
+        ],
+      ),
+    );
   }
 }

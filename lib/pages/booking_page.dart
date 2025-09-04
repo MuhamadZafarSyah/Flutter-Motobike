@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:main/models/bike.dart';
+import 'package:main/widgets/booking_bike.dart';
+import 'package:main/widgets/button_primary.dart';
+import 'package:main/widgets/header.dart';
+import 'package:main/widgets/input.dart';
 
 class BookingPage extends StatefulWidget {
   const BookingPage({super.key, required this.bike});
@@ -15,138 +19,175 @@ class BookingPage extends StatefulWidget {
 }
 
 class _BookingPageState extends State<BookingPage> {
+  final edtName = TextEditingController();
+  final edtStartDate = TextEditingController();
+  final edtEndDate = TextEditingController();
+
+  pickDate(TextEditingController editingController) {
+    showDatePicker(
+      context: context,
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 30)),
+      initialDate: DateTime.now(),
+    ).then((pickedDate) {
+      if (pickedDate == null) return;
+      editingController.text = DateFormat('dd MMM yyyy').format(pickedDate);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
         children: [
           Gap(30 + MediaQuery.of(context).padding.top),
-
-          buildHeader(),
+          Header(title: 'Booking'),
           const Gap(20),
-          buildBookingBike(widget.bike),
-        ],
-      ),
-    );
-  }
-
-  Widget buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Container(
-              height: 46,
-              width: 46,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-              ),
-              alignment: Alignment.center,
-              child: Image.asset(
-                'assets/ic_arrow_back.png',
-                width: 24,
-                height: 24,
-              ),
+          BookingBike(bike: widget.bike),
+          const Gap(20),
+          buildFormBooking(),
+          const Gap(20),
+          buildAgency(),
+          const Gap(20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: ButtonPrimary(
+              text: "Proceed to Checkout",
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  '/checkout',
+                  arguments: {
+                    'bike': widget.bike,
+                    'startDate': edtStartDate.text,
+                    'endDate': edtEndDate.text,
+                  },
+                );
+              },
             ),
-          ),
-          const Expanded(
-            child: Text(
-              'Booking',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                color: Color(0xff070623),
-              ),
-            ),
-          ),
-          Container(
-            height: 46,
-            width: 46,
-
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white,
-            ),
-            alignment: Alignment.center,
-            child: Image.asset('assets/ic_more.png', width: 24, height: 24),
           ),
         ],
       ),
     );
   }
 
-  Widget buildBookingBike(Bike bike) {
-    // final String imageStr = bike.image.trim();
-    // final bool isNetwork = imageStr.startsWith('http');
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Container(
-        height: 98,
-        width: 345,
-
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+  Widget buildAgency() {
+    final listAgency = ['Revolte', 'KBP City', 'Sumadap'];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: const Text(
+            'Agency',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Color(0xff070623),
+            ),
+          ),
         ),
-        child: Row(
-          children: [
-            ExtendedImage.network(
-              bike.image,
-              height: 70,
-              width: 90,
-              fit: BoxFit.cover,
-            ),
-            const Gap(10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    bike.name,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff070623),
-                    ),
-                  ),
-                  const Gap(4),
-                  Text(
-                    bike.category,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff838384),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const Gap(10),
-            Row(
-              children: [
-                Text(
-                  bike.rating.toString(),
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xff070623),
-                  ),
+        const Gap(12),
+        SizedBox(
+          height: 120,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            itemCount: listAgency.length,
+            itemBuilder: (context, index) {
+              return Container(
+                width: 120,
+                margin: EdgeInsets.only(
+                  left: index == 0 ? 24 : 8,
+                  right: index == listAgency.length - 1 ? 24 : 8,
                 ),
-                const Gap(4),
-                Icon(Icons.star, size: 20, color: const Color(0xffFFBC1C)),
-              ],
-            ),
-          ],
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  border: index == 1
+                      ? Border.all(width: 3, color: const Color(0xff4A1DFF))
+                      : null,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ExtendedImage.asset(
+                      'assets/agency.png',
+                      width: 38,
+                      height: 38,
+                    ),
+                    const Gap(10),
+                    Text(
+                      listAgency[index],
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff070623),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
+      ],
+    );
+  }
+
+  Widget buildFormBooking() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Complete Name',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Color(0xff070623),
+            ),
+          ),
+          const Gap(12),
+          Input(
+            hint: 'Write your real name',
+            editingController: edtName,
+            icon: 'assets/ic_profile.png',
+          ),
+          const Gap(20),
+          Text(
+            'Start Rent Date',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Color(0xff070623),
+            ),
+          ),
+          Input(
+            hint: 'Choose your date',
+            editingController: edtStartDate,
+            icon: 'assets/ic_calendar.png',
+            enable: false,
+            onTapBox: () => pickDate(edtStartDate),
+          ),
+          const Gap(20),
+          Text(
+            'End Date',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Color(0xff070623),
+            ),
+          ),
+          Input(
+            hint: 'Choose your date',
+            editingController: edtEndDate,
+            icon: 'assets/ic_calendar.png',
+            enable: false,
+            onTapBox: () => pickDate(edtEndDate),
+          ),
+        ],
       ),
     );
   }

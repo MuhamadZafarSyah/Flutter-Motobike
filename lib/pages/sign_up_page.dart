@@ -32,6 +32,7 @@ class _SignUpPageState extends State<SignUpPage> {
       if (message != 'success') return Info.error(message);
       Info.success('Account Sign up');
       Future.delayed(const Duration(milliseconds: 1500), () {
+        // ignore: use_build_context_synchronously
         Navigator.pushReplacementNamed(context, '/signin');
       });
     });
@@ -65,7 +66,7 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
           const Gap(12),
           Input(
-            hint: 'write your real name',
+            hint: 'Write your real name',
             editingController: edtName,
             icon: 'assets/ic_profile.png',
           ),
@@ -79,7 +80,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           Input(
-            hint: 'write your real email',
+            hint: 'Write your real email',
             editingController: edtEmail,
             icon: 'assets/ic_email.png',
           ),
@@ -93,13 +94,14 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           Input(
-            hint: 'write your password',
+            hint: 'Write your password',
             editingController: edtPassword,
             icon: 'assets/ic_key.png',
             obscure: true,
           ),
           const Gap(30),
           ButtonPrimary(text: "Create New Account", onTap: createNewAccount),
+
           const Gap(30),
           const DottedLine(
             dashLength: 6,

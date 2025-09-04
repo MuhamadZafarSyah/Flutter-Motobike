@@ -236,7 +236,7 @@ class _BrowseFragmentState extends State<BrowseFragment> {
               bike.image,
               height: 70,
               width: 90,
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
             ),
             const Gap(10),
             Expanded(
