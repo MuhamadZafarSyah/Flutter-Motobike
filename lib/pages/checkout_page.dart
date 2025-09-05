@@ -1,6 +1,7 @@
 import 'package:d_session/d_session.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:main/models/account.dart';
@@ -25,17 +26,68 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
-  final totalBalance = 100;
+  final totalBalance = 1000000;
   late int totalDurationDays; // dihitung di initState
   late num subTotal;
   late num insurance; // contoh 20%
   late num tax; // contoh 2%
   late num grandTotal;
   int _selectedPaymentMethod = -1;
+  FToast fToast = FToast();
+
+  void handleCheckout() {
+    if (_selectedPaymentMethod == -1) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select a payment method')),
+      );
+      return;
+    }
+
+    if (totalBalance < grandTotal) {
+      Widget notifUi = Transform.translate(
+        offset: const Offset(0, -50),
+        child: Container(
+          height: 96,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          decoration: BoxDecoration(
+            color: Color(0xffFF2055),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 20,
+                offset: const Offset(0, 16),
+                color: const Color(0xffFF2055).withValues(alpha: 0.25),
+              ),
+            ],
+          ),
+          child: Text(
+            'Failed to checkout. Your wallet has no enough balance at this moment.',
+            style: const TextStyle(
+              fontSize: 16,
+              height: 1.5,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      );
+
+      fToast.showToast(
+        child: notifUi,
+        gravity: ToastGravity.TOP,
+        toastDuration: const Duration(milliseconds: 2500),
+      );
+
+      return;
+    }
+
+    Navigator.pushNamed(context, '/pin', arguments: widget.bike);
+  }
 
   @override
   void initState() {
     super.initState();
+    fToast.init(context);
     totalDurationDays = _calcDuration(widget.startDate, widget.endDate); // hari
     subTotal = totalDurationDays * widget.bike.price;
 
@@ -82,12 +134,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           const Gap(24),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: ButtonPrimary(
-              text: "Checkout Now",
-              onTap: () {
-                Navigator.pushNamed(context, '/pin', arguments: widget.bike);
-              },
-            ),
+            child: ButtonPrimary(text: "Checkout Now", onTap: handleCheckout),
           ),
           const Gap(24),
         ],
@@ -250,7 +297,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
         future: DSession.getUser(),
         builder: (context, asyncSnapshot) {
           if (asyncSnapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              heightFactor: 4,
+              child: CircularProgressIndicator(),
+            );
           }
           Account user = Account.fromJson(Map.from(asyncSnapshot.data!));
           return Stack(
