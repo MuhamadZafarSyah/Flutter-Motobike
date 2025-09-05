@@ -102,6 +102,8 @@ class _BookingPageState extends State<BookingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
+        padding: const EdgeInsets.all(0),
+
         children: [
           Gap(30 + MediaQuery.of(context).padding.top),
           Header(title: 'Booking'),

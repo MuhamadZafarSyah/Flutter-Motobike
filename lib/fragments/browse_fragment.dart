@@ -27,12 +27,6 @@ class _BrowseFragmentState extends State<BrowseFragment> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       browseFeatureController.fetchFeatured();
       browseNewestController.fetchNewest();
-      bookingStatusController.bike = {
-        'id': 'bike_1',
-        'name': 'Mountain Bike',
-        'image':
-            'https://res.cloudinary.com/djxobtcx0/image/upload/v1756301923/enfielding_pro_wwxnzd.png',
-      };
     });
     super.initState();
   }
