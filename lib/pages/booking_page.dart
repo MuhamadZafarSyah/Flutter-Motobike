@@ -22,7 +22,7 @@ class _BookingPageState extends State<BookingPage> {
   final edtName = TextEditingController();
   final edtStartDate = TextEditingController();
   final edtEndDate = TextEditingController();
-
+  int _selectedAgencyIndex = -1; // -1 = belum ada pilihan
   // pickDate(TextEditingController editingController, bool endDate) {
   //   showDatePicker(
   //     context: context,
@@ -241,37 +241,51 @@ class _BookingPageState extends State<BookingPage> {
             physics: const BouncingScrollPhysics(),
             itemCount: listAgency.length,
             itemBuilder: (context, index) {
-              return Container(
-                width: 120,
-                margin: EdgeInsets.only(
-                  left: index == 0 ? 24 : 8,
-                  right: index == listAgency.length - 1 ? 24 : 8,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  border: index == 1
-                      ? Border.all(width: 3, color: const Color(0xff4A1DFF))
-                      : null,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ExtendedImage.asset(
-                      'assets/agency.png',
-                      width: 38,
-                      height: 38,
+              final isSelected = index == _selectedAgencyIndex;
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    // toggle select
+                    _selectedAgencyIndex = isSelected ? -1 : index;
+                  });
+                },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 180),
+                  width: 120,
+                  margin: EdgeInsets.only(
+                    left: index == 0 ? 24 : 8,
+                    right: index == listAgency.length - 1 ? 24 : 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    // border muncul saat terpilih
+                    border: Border.all(
+                      width: isSelected ? 3 : 1,
+                      color: isSelected
+                          ? const Color(0xff4A1DFF)
+                          : Colors.transparent,
                     ),
-                    const Gap(10),
-                    Text(
-                      listAgency[index],
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff070623),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ExtendedImage.asset(
+                        'assets/agency.png',
+                        width: 38,
+                        height: 38,
                       ),
-                    ),
-                  ],
+                      const Gap(10),
+                      Text(
+                        listAgency[index],
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff070623),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
