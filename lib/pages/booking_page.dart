@@ -133,7 +133,7 @@ class _BookingPageState extends State<BookingPage> {
               },
             ),
           ),
-          const Gap(24),
+          const Gap(48),
         ],
       ),
     );

@@ -9,6 +9,7 @@ import 'package:main/pages/chatting_page.dart';
 import 'package:main/pages/checkout_page.dart';
 import 'package:main/pages/detail_page.dart';
 import 'package:main/pages/discover_page.dart';
+import 'package:main/pages/edit_profile_page.dart';
 import 'package:main/pages/pin_page.dart';
 import 'package:main/pages/sign_in_page.dart';
 import 'package:main/pages/sign_up_page.dart';
@@ -104,6 +105,7 @@ class MyApp extends StatelessWidget {
           String userName = data['userName'];
           return ChattingPage(uid: uid, userName: userName);
         },
+        '/edit-profile': (context) => const EditProfilePage(),
       },
     );
   }

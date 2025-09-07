@@ -70,7 +70,9 @@ class _SettingsFragmentState extends State<SettingsFragment> {
             children: [
               buildProfileInfo(),
               const Gap(30),
-              buildItemSetting('assets/ic_profile.png', 'Edit Profile', null),
+              buildItemSetting('assets/ic_profile.png', 'Edit Profile', () {
+                Navigator.pushNamed(context, '/edit-profile');
+              }),
               const Gap(20),
               buildItemSetting(
                 'assets/ic_wallet.png',

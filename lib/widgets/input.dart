@@ -9,6 +9,7 @@ class Input extends StatelessWidget {
     this.obscure,
     this.enable = true,
     this.onTapBox,
+    this.inputType,
   });
 
   // Properties
@@ -26,6 +27,7 @@ class Input extends StatelessWidget {
   final bool enable;
   final VoidCallback? onTapBox;
 
+  final TextInputType? inputType;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -33,7 +35,7 @@ class Input extends StatelessWidget {
 
       child: TextField(
         controller: editingController,
-
+        keyboardType: inputType,
         // JIKA ADA ICON MAKA TAMBAHKAN
         style: const TextStyle(
           fontSize: 16,
